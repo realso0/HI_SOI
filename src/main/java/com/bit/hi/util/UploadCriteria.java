@@ -20,7 +20,7 @@ public class UploadCriteria {
 
 
 	public void upload(VideoVo videoVo, MultipartFile mFile) {
-		String saveDir = "C:\\javaStudy\\upload"; // 서버에 저장할 공간 만들기(저장 위치)
+		String saveDir = "C:\\javaStudy\\upload"; // 서버에 저장할 공간을 videoPath 변수 만들 때 값 이용하기 위해, 여기서 saveDir을 도구로써 만든 것.
 		
 		// 1-파일정보 수집
 		// 원래 파일이름
@@ -36,7 +36,7 @@ public class UploadCriteria {
 		System.out.println(saveName);
 
 		// 파일 위치(path)
-		String videoPath = saveDir + "\\" + saveName;
+		String videoPath = saveDir + "\\" + saveName; //여기서 파일위치 사용
 		System.out.println(videoPath);
 
 		// 파일 사이즈

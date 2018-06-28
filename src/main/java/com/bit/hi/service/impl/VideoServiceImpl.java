@@ -26,41 +26,43 @@ public class VideoServiceImpl implements VideoService {
 	public int upload(MultipartHttpServletRequest file, VideoVo videoVo) throws Exception{
 		System.out.println("service 진입");
 		
-		Iterator<String> files=file.getFileNames();
+		Iterator<String> iterator=file.getFileNames();
 		
-		String uploadFile=files.next();
+		while(iterator.hasNext()){
+			String uploadFile=iterator.next();
 		
-		MultipartFile mFile=file.getFile(uploadFile);
+			MultipartFile mFile=file.getFile(uploadFile);
 
-		if (!mFile.isEmpty()) {
-			//영상 정보 추출
-			UploadCriteria upCri=new UploadCriteria();
-			upCri.upload(videoVo, mFile);
-
-			//썸네일 생성
-			String videoThumnail=ExtractImage.extractImage(videoVo.getSaveDir(), videoVo.getVideoSaveName());
-			System.out.println(videoThumnail);
-			videoVo.setVideoThumnail(videoThumnail);
-			
-			//영상, 썸네일 저장
-			videoDao.insertUpload(videoVo);
-			
-			MongoVo mongoVo=new MongoVo();
-			mongoVo.setVideoNo(String.valueOf(videoVo.getVideoNo())); //문자형으로 바꿔서 저장(불러올 때 key값으로 사용하기 위해)
-			mongoVo.setUserId(videoVo.getUserId());
-			mongoVo.setVideoOriginName(videoVo.getVideoOriginName());
-			mongoVo.setVideoPath(videoVo.getVideoPath());
-			mongoVo.setVideoSize(videoVo.getVideoSize());
-			mongoVo.setVideoSaveName(videoVo.getVideoSaveName());
-			mongoVo.setVideoThumnail(videoVo.getVideoThumnail());
-			mongoVo.setVideoDelete(0);
-			
-			//MongoDB 저장
-			videoDao.mongoSave(mongoVo);
-			System.out.println("saved videoNo:::::: " + videoVo.getVideoNo());
-			
-			return videoVo.getVideoNo();
-		}
+			if (!mFile.isEmpty()) {
+				//영상 정보 추출
+				UploadCriteria upCri=new UploadCriteria();
+				upCri.upload(videoVo, mFile);
+	
+				//썸네일 생성
+				String videoThumnail=ExtractImage.extractImage(videoVo.getSaveDir(), videoVo.getVideoSaveName());
+				System.out.println(videoThumnail);
+				videoVo.setVideoThumnail(videoThumnail);
+				
+				//영상, 썸네일 저장
+				videoDao.insertUpload(videoVo);
+				
+				MongoVo mongoVo=new MongoVo();
+				mongoVo.setVideoNo(String.valueOf(videoVo.getVideoNo())); //문자형으로 바꿔서 저장(불러올 때 key값으로 사용하기 위해)
+				mongoVo.setUserId(videoVo.getUserId());
+				mongoVo.setVideoOriginName(videoVo.getVideoOriginName());
+				mongoVo.setVideoPath(videoVo.getVideoPath());
+				mongoVo.setVideoSize(videoVo.getVideoSize());
+				mongoVo.setVideoSaveName(videoVo.getVideoSaveName());
+				mongoVo.setVideoThumnail(videoVo.getVideoThumnail());
+				mongoVo.setVideoDelete(0);
+				
+				//MongoDB 저장
+				videoDao.mongoSave(mongoVo);
+				System.out.println("saved videoNo:::::: " + videoVo.getVideoNo());
+				
+				return videoVo.getVideoNo();
+			} //if()
+		} //while()
 		return 0;
 	}
 	
