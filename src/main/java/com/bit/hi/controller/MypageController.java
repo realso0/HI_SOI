@@ -1,5 +1,7 @@
 package com.bit.hi.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -10,10 +12,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.bit.hi.domain.vo.UserVo;
 import com.bit.hi.domain.vo.VideoVo;
+import com.bit.hi.mongo.vo.ExcelVo;
 import com.bit.hi.service.MypageService;
 
 @Controller
@@ -37,6 +41,25 @@ public class MypageController {
 		System.out.println(myVideoMap);
 		model.addAttribute("myVideoMap", myVideoMap);
 		return "mypage/videoclip";
+	}
+	
+	//엑셀에 뿌려주기
+	@RequestMapping("/downExcel")
+	public ModelAndView downExcel(HttpSession session) throws Exception {
+		List<ExcelVo> listInterviews = new ArrayList<ExcelVo>();
+		ExcelVo excelVo = new ExcelVo();
+
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		Map<String, Object> myVideoMap = mypageService.clipGetList(authUser.getUserId());
+		
+		List<VideoVo> list = (List<VideoVo>) myVideoMap.get("myVideoList");
+		
+		for (int i=0; i<list.size(); i++) {
+			listInterviews.add(new ExcelVo(list.get(i).getRn(), list.get(i).getVideoOriginName(), list.get(i).getVideoDate(), list.get(i).getTotal_grade()));
+		}
+		
+		return new ModelAndView("excelView", "VideoLists", listInterviews);
+		
 	}
 	
 	//영상관리 세부내용

@@ -56,6 +56,8 @@
                             <!-- 내용 부분 -->
                             <div class="posts-block col-lg-9 col-md-9 col-sm-9 col-xs-12">
                                 <h2>영상관리</h2>
+                                <a class="btn btn-color btn-normal btn-pad pull-right" href="${pageContext.request.contextPath}/mypage/downExcel" style="align:right">엑셀 다운로드</a>
+                                <br/><br/><br/>
                                 <table class="table table-striped table-bordered">
                                 	<colgroup>
 										<col width="6%">

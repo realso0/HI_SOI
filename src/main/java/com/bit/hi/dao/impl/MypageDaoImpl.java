@@ -38,7 +38,7 @@ public class MypageDaoImpl implements MypageDao {
 	@Autowired
 	private MongoTemplate mongoTemplate;
 	
-	//영상관리 페이징
+	//영상관리 리스트
 	@Override
 	public List<VideoVo> selectMyVideoList(String userId) throws Exception {
 		

@@ -37,7 +37,6 @@ public class MypageServiceImpl implements MypageService {
 	//내가 업로드 한 리스트(영상관리)
 	@Override
 	public Map<String, Object> clipGetList(String userId) throws Exception{
-		// 페이지 뿌려주기 관련 작업
 
 		List<VideoVo> myVideoList = mypageDao.selectMyVideoList(userId);
 		List<Integer> list1=mypageDao.selectVideoScore(userId, 0);

@@ -3,6 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
@@ -18,13 +19,18 @@
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<!-- 뷰리졸버는 항상 나중에 나오도록 해야함 -->
-	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:order="1">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
 	<context:component-scan base-package="com.bit.hi.controller, com.bit.hi.api.controller" />
 	<context:component-scan base-package="com.bit.hi.exception" />
+	
+	<beans:bean id="resourceBundleViewResolver" 
+	class="org.springframework.web.servlet.view.ResourceBundleViewResolver" p:order="0">
+		<beans:property name="basename" value="views" />
+	</beans:bean>
 	
 	<!-- 멀티파트 리졸버(파일첨부 기능)-->
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
